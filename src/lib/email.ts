@@ -30,8 +30,8 @@ export async function sendConfirmationEmail({
       ? "Journées Gynécologie Annaba"
       : "Annaba Gynecology Conference";
     const { data, error } = await resend.emails.send({
-      from: `${fromName} <noreply@annabagyneco2026.dz>`,
-      replyTo: "journees.gynea.annaba2026@gmail.com",
+      from: `${fromName} <omardjemil25@gmail.com>`,
+      replyTo: "omardjemil25@gmail.com",
       to: [to],
       subject: isFr
         ? "Inscription confirmée — Journées de Gynécologie & Obstétrique d'Annaba"
