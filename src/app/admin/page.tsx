@@ -304,9 +304,9 @@ export default function AdminPage() {
   // ─── Login screen ─────────────────────────────────────────
   if (!loggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#faf4f5] via-[#e8dfe2] to-[#dce8f0] px-6">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#faf4f5] via-[#e8dfe2] to-[#dce8f0] px-4 sm:px-6">
         <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden">
-          <div className="text-center pt-10 px-10">
+          <div className="text-center pt-8 sm:pt-10 px-6 sm:px-10">
             <div className="text-right -mt-2 mb-1">
               <button
                 onClick={() => setLang(lang === "fr" ? "en" : "fr")}
@@ -321,7 +321,7 @@ export default function AdminPage() {
               {t("appTitle")}
             </p>
           </div>
-          <div className="px-10 py-7">
+          <div className="px-6 sm:px-10 py-5 sm:py-7">
             {loginError && (
               <div className="bg-danger-light text-danger text-sm px-4 py-3 rounded-md mb-5">
                 {loginError}
@@ -569,10 +569,10 @@ export default function AdminPage() {
         </div>
 
         {showProgram && (
-          <div className="bg-white border border-border rounded-2xl p-6 mb-6 shadow-sm">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+          <div className="bg-white border border-border rounded-2xl p-4 sm:p-6 mb-6 shadow-sm">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 sm:mb-6">
               <h2 className="font-heading text-lg font-bold">{t("programEditor")}</h2>
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
                 <button
                   onClick={resetProgram}
                   className="text-xs px-2 py-1 text-muted hover:text-primary underline"
@@ -596,7 +596,7 @@ export default function AdminPage() {
             </div>
 
             {/* Venue, Contact & Phone */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 pb-6 border-b border-border">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-border">
               <label className="flex flex-col gap-1.5">
                 <span className="text-xs font-semibold">{t("venueField")}</span>
                 <input
@@ -631,7 +631,7 @@ export default function AdminPage() {
               {program.days.map((day, di) => (
                 <div
                   key={di}
-                  className="border border-border rounded-xl p-5 bg-[#fdfbfc]"
+                  className="border border-border rounded-xl p-3 sm:p-5 bg-[#fdfbfc]"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-semibold text-primary uppercase tracking-wider">
@@ -645,7 +645,7 @@ export default function AdminPage() {
                     </button>
                   </div>
 
-                  <div className="grid sm:grid-cols-2 gap-3 mb-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mb-3 sm:mb-4">
                     <label className="flex flex-col gap-1">
                       <span className="text-[11px] font-semibold text-muted">{t("dayTitle")}</span>
                       <input
@@ -668,26 +668,26 @@ export default function AdminPage() {
 
                   {/* Sessions */}
                   <p className="text-[11px] font-semibold text-muted mb-2">{t("sessions")}</p>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     {day.sessions.map(([time, title], si) => (
-                      <div key={si} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                        <div className="flex items-center gap-2 flex-1">
+                      <div key={si} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-1.5 sm:gap-2">
+                        <div className="flex items-center gap-1.5 sm:gap-2 flex-1">
                           <input
                             value={time}
                             onChange={(e) => updateSession(di, si, 0, e.target.value)}
-                            placeholder={t("timePlaceholder")}
-                            className="px-3 py-2 border border-border rounded-md text-sm w-16 sm:w-20 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none font-mono shrink-0"
+                            placeholder="HH:MM"
+                            className="px-2 sm:px-3 py-2 border border-border rounded-md text-sm w-14 sm:w-20 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none font-mono shrink-0"
                           />
                           <input
                             value={title}
                             onChange={(e) => updateSession(di, si, 1, e.target.value)}
                             placeholder={t("sessionPlaceholder")}
-                            className="px-3 py-2 border border-border rounded-md text-sm flex-1 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
+                            className="px-2 sm:px-3 py-2 border border-border rounded-md text-sm flex-1 min-w-0 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
                           />
                         </div>
                         <button
                           onClick={() => removeSession(di, si)}
-                          className="text-muted hover:text-danger transition-colors shrink-0 text-lg leading-none px-1 self-end sm:self-center"
+                          className="text-muted hover:text-danger transition-colors shrink-0 text-lg leading-none px-2 py-1 self-end sm:self-center border border-border rounded-md sm:border-0"
                           title={t("removeSession")}
                         >
                           ×
