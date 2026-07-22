@@ -372,30 +372,32 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-[#faf8f9]">
       {/* Header */}
-      <header className="bg-white border-b border-border px-6 py-4 sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl text-primary">♀</span>
+      <header className="bg-white border-b border-border px-4 sm:px-6 py-3 sm:py-4 sticky top-0 z-10">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="text-xl sm:text-2xl text-primary">♀</span>
             <div>
-              <h1 className="font-heading text-lg font-bold">{t("adminDashboard")}</h1>
-              <p className="text-xs text-muted">
+              <h1 className="font-heading text-base sm:text-lg font-bold">{t("adminDashboard")}</h1>
+              <p className="text-[11px] sm:text-xs text-muted line-clamp-1">
                 {t("appTitle")}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setLang(lang === "fr" ? "en" : "fr")}
-              className="text-xs px-3 py-1.5 border border-border rounded-full hover:bg-primary-lighter transition-colors"
-            >
-              {lang === "fr" ? t("switchToLabel") : t("languageLabel")}
-            </button>
-            <a href="/" className="text-xs text-muted hover:text-primary transition-colors">
-              {t("registerPage")}
-            </a>
+          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-end">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setLang(lang === "fr" ? "en" : "fr")}
+                className="text-[11px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 border border-border rounded-full hover:bg-primary-lighter transition-colors"
+              >
+                {lang === "fr" ? t("switchToLabel") : t("languageLabel")}
+              </button>
+              <a href="/" className="text-[11px] sm:text-xs text-muted hover:text-primary transition-colors hidden sm:inline">
+                {t("registerPage")}
+              </a>
+            </div>
             <button
               onClick={handleLogout}
-              className="text-xs px-3 py-1.5 border border-border rounded-md hover:bg-[#faf4f5] transition-colors"
+              className="text-[11px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 border border-border rounded-md hover:bg-[#faf4f5] transition-colors"
             >
               {t("logout")}
             </button>
@@ -403,9 +405,9 @@ export default function AdminPage() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-8">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-6 sm:mb-8">
           <div className="bg-white border border-border rounded-xl p-4">
             <p className="text-2xl font-bold text-primary">{stats.total}</p>
             <p className="text-xs text-muted mt-1">{t("totalRegistrants")}</p>
@@ -568,9 +570,9 @@ export default function AdminPage() {
 
         {showProgram && (
           <div className="bg-white border border-border rounded-2xl p-6 mb-6 shadow-sm">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
               <h2 className="font-heading text-lg font-bold">{t("programEditor")}</h2>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                 <button
                   onClick={resetProgram}
                   className="text-xs px-2 py-1 text-muted hover:text-primary underline"
@@ -594,7 +596,7 @@ export default function AdminPage() {
             </div>
 
             {/* Venue, Contact & Phone */}
-            <div className="grid sm:grid-cols-3 gap-4 mb-6 pb-6 border-b border-border">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 pb-6 border-b border-border">
               <label className="flex flex-col gap-1.5">
                 <span className="text-xs font-semibold">{t("venueField")}</span>
                 <input
@@ -668,22 +670,24 @@ export default function AdminPage() {
                   <p className="text-[11px] font-semibold text-muted mb-2">{t("sessions")}</p>
                   <div className="space-y-2">
                     {day.sessions.map(([time, title], si) => (
-                      <div key={si} className="flex items-center gap-2">
-                        <input
-                          value={time}
-                          onChange={(e) => updateSession(di, si, 0, e.target.value)}
-                          placeholder={t("timePlaceholder")}
-                          className="px-3 py-2 border border-border rounded-md text-sm w-20 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none font-mono"
-                        />
-                        <input
-                          value={title}
-                          onChange={(e) => updateSession(di, si, 1, e.target.value)}
-                          placeholder={t("sessionPlaceholder")}
-                          className="px-3 py-2 border border-border rounded-md text-sm flex-1 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
-                        />
+                      <div key={si} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                        <div className="flex items-center gap-2 flex-1">
+                          <input
+                            value={time}
+                            onChange={(e) => updateSession(di, si, 0, e.target.value)}
+                            placeholder={t("timePlaceholder")}
+                            className="px-3 py-2 border border-border rounded-md text-sm w-16 sm:w-20 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none font-mono shrink-0"
+                          />
+                          <input
+                            value={title}
+                            onChange={(e) => updateSession(di, si, 1, e.target.value)}
+                            placeholder={t("sessionPlaceholder")}
+                            className="px-3 py-2 border border-border rounded-md text-sm flex-1 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
+                          />
+                        </div>
                         <button
                           onClick={() => removeSession(di, si)}
-                          className="text-muted hover:text-danger transition-colors shrink-0 text-lg leading-none px-1"
+                          className="text-muted hover:text-danger transition-colors shrink-0 text-lg leading-none px-1 self-end sm:self-center"
                           title={t("removeSession")}
                         >
                           ×
@@ -710,7 +714,7 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* Users table */}
+        {/* Users — Card view on mobile, table on desktop */}
         {loadingUsers ? (
           <div className="text-center py-16 text-muted">{t("loadingRegistrants")}</div>
         ) : filtered.length === 0 ? (
@@ -726,81 +730,131 @@ export default function AdminPage() {
             )}
           </div>
         ) : (
-          <div className="bg-white border border-border rounded-2xl overflow-hidden shadow-sm">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-[#faf4f5] text-left">
-                    <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary">
-                      {t("name")}
-                    </th>
-                    <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary">
-                      {t("emailCol")}
-                    </th>
-                    <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary hidden md:table-cell">
-                      {t("gradeCol")}
-                    </th>
-                    <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary hidden lg:table-cell">
-                      {t("specialiteCol")}
-                    </th>
-                    <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary hidden lg:table-cell">
-                      {t("workplaceCol")}
-                    </th>
-                    <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary hidden sm:table-cell">
-                      {t("phoneCol")}
-                    </th>
-                    <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary hidden lg:table-cell">
-                      {t("registered")}
-                    </th>
-                    <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary w-20">
-                      {t("action")}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#f3eff0]">
-                  {filtered.map((user) => (
-                    <tr key={user.id} className="hover:bg-[#fdfbfc] transition-colors">
-                      <td className="px-5 py-3.5 font-medium">
+          <>
+            {/* Mobile cards */}
+            <div className="lg:hidden space-y-3">
+              {filtered.map((user) => (
+                <div
+                  key={user.id}
+                  className="bg-white border border-border rounded-xl p-4 shadow-sm"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <p className="font-semibold text-sm">
                         {user.firstName} {user.lastName}
-                      </td>
-                      <td className="px-5 py-3.5 text-muted">{user.email}</td>
-                      <td className="px-5 py-3.5 hidden md:table-cell">
-                        <span className="inline-block px-2 py-0.5 bg-primary-lighter text-primary text-xs font-medium rounded-full">
-                          {user.grade}
-                        </span>
-                      </td>
-                      <td className="px-5 py-3.5 text-muted hidden lg:table-cell">
-                        {user.specialite || "—"}
-                      </td>
-                      <td className="px-5 py-3.5 text-muted hidden lg:table-cell">
-                        {user.workplace}
-                      </td>
-                      <td className="px-5 py-3.5 text-muted hidden sm:table-cell">
-                        {user.phone || "—"}
-                      </td>
-                      <td className="px-5 py-3.5 text-muted hidden lg:table-cell text-xs">
-                        {new Date(user.registeredAt).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-US", {
-                          month: "short",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </td>
-                      <td className="px-5 py-3.5">
-                        <button
-                          onClick={() => handleDelete(user.id)}
-                          disabled={deleteId === user.id}
-                          className="text-xs px-2.5 py-1.5 text-danger border border-danger/20 rounded-md hover:bg-danger-light disabled:opacity-40 transition-colors"
-                        >
-                          {deleteId === user.id ? t("deleting") : t("delete")}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </p>
+                      <p className="text-xs text-muted">{user.email}</p>
+                    </div>
+                    <span className="inline-block px-2 py-0.5 bg-primary-lighter text-primary text-[11px] font-medium rounded-full shrink-0">
+                      {user.grade}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-muted mb-3">
+                    {user.specialite && (
+                      <p><span className="font-medium text-foreground">{t("specialiteCol")}:</span> {user.specialite}</p>
+                    )}
+                    <p><span className="font-medium text-foreground">{t("workplaceCol")}:</span> {user.workplace}</p>
+                    {user.phone && (
+                      <p><span className="font-medium text-foreground">{t("phoneCol")}:</span> {user.phone}</p>
+                    )}
+                    <p className="col-span-2">
+                      <span className="font-medium text-foreground">{t("registered")}:</span>{" "}
+                      {new Date(user.registeredAt).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-US", {
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleDelete(user.id)}
+                    disabled={deleteId === user.id}
+                    className="w-full text-xs py-2 text-danger border border-danger/20 rounded-md hover:bg-danger-light disabled:opacity-40 transition-colors"
+                  >
+                    {deleteId === user.id ? t("deleting") : t("delete")}
+                  </button>
+                </div>
+              ))}
             </div>
-          </div>
+
+            {/* Desktop table */}
+            <div className="hidden lg:block bg-white border border-border rounded-2xl overflow-hidden shadow-sm">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-[#faf4f5] text-left">
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary">
+                        {t("name")}
+                      </th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary">
+                        {t("emailCol")}
+                      </th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary">
+                        {t("gradeCol")}
+                      </th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary">
+                        {t("specialiteCol")}
+                      </th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary">
+                        {t("workplaceCol")}
+                      </th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary">
+                        {t("phoneCol")}
+                      </th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary">
+                        {t("registered")}
+                      </th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary w-20">
+                        {t("action")}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#f3eff0]">
+                    {filtered.map((user) => (
+                      <tr key={user.id} className="hover:bg-[#fdfbfc] transition-colors">
+                        <td className="px-5 py-3.5 font-medium">
+                          {user.firstName} {user.lastName}
+                        </td>
+                        <td className="px-5 py-3.5 text-muted">{user.email}</td>
+                        <td className="px-5 py-3.5">
+                          <span className="inline-block px-2 py-0.5 bg-primary-lighter text-primary text-xs font-medium rounded-full">
+                            {user.grade}
+                          </span>
+                        </td>
+                        <td className="px-5 py-3.5 text-muted">
+                          {user.specialite || "—"}
+                        </td>
+                        <td className="px-5 py-3.5 text-muted">
+                          {user.workplace}
+                        </td>
+                        <td className="px-5 py-3.5 text-muted">
+                          {user.phone || "—"}
+                        </td>
+                        <td className="px-5 py-3.5 text-muted text-xs">
+                          {new Date(user.registeredAt).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-US", {
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </td>
+                        <td className="px-5 py-3.5">
+                          <button
+                            onClick={() => handleDelete(user.id)}
+                            disabled={deleteId === user.id}
+                            className="text-xs px-2.5 py-1.5 text-danger border border-danger/20 rounded-md hover:bg-danger-light disabled:opacity-40 transition-colors"
+                          >
+                            {deleteId === user.id ? t("deleting") : t("delete")}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
         )}
 
         {/* Footer info */}

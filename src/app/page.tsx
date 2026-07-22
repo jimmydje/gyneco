@@ -186,7 +186,7 @@ export default function HomePage() {
   // Registration form
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-6 py-16 relative"
+      className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-8 sm:py-16 relative"
       style={{
         backgroundImage: `url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1920&q=80')`,
         backgroundSize: "cover",
@@ -197,7 +197,7 @@ export default function HomePage() {
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#faf4f5]/95 via-[#e8dfe2]/95 to-[#dce8f0]/95" />
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden relative z-10">
-        <div className="text-center pt-10 px-10">
+        <div className="text-center pt-8 sm:pt-10 px-6 sm:px-10">
           {/* Language switcher */}
           <div className="text-right -mt-2 mb-1">
             <button
@@ -207,8 +207,8 @@ export default function HomePage() {
               {lang === "fr" ? t("switchToLabel") : t("languageLabel")}
             </button>
           </div>
-          <span className="text-3xl text-primary">♀</span>
-          <h1 className="font-heading text-2xl font-bold mt-3">
+          <span className="text-2xl sm:text-3xl text-primary">♀</span>
+          <h1 className="font-heading text-xl sm:text-2xl font-bold mt-3">
             {t("registerTitle")}
           </h1>
           <p className="text-sm text-muted mt-1">
@@ -219,7 +219,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="px-10 py-7">
+        <div className="px-6 sm:px-10 py-5 sm:py-7">
           {error && (
             <div className="bg-danger-light text-danger text-sm px-4 py-3 rounded-md mb-5">
               {error}
