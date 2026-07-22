@@ -66,7 +66,9 @@ export async function POST(req: NextRequest) {
   });
 
   if (sendEmail) {
-    sendConfirmationEmail({ to: normalizedEmail, firstName, lastName }).catch(() => {});
+    sendConfirmationEmail({ to: normalizedEmail, firstName, lastName, lang: "fr" }).catch((err) => {
+      console.error("[EMAIL] Admin add-user email failed:", err);
+    });
   }
 
   return NextResponse.json({ success: true }, { status: 201 });

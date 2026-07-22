@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
   // Send confirmation email (non-blocking)
   sendConfirmationEmail({ to: normalizedEmail, firstName, lastName, lang: lang || "fr" }).catch(
-    () => {}
+    (err) => console.error("[EMAIL] Registration email failed:", err)
   );
 
   return NextResponse.json({ success: true }, { status: 201 });
