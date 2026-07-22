@@ -42,7 +42,8 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   const t = useCallback(
     (key: TranslationKey, vars?: Record<string, string>): string => {
-      let text = translations[lang]?.[key] ?? translations.fr[key] ?? key;
+      const dict = translations[lang] as Record<string, unknown>;
+      let text = (dict?.[key] as string) ?? (translations.fr as Record<string, unknown>)?.[key] as string ?? key;
       if (vars) {
         for (const [k, v] of Object.entries(vars)) {
           text = text.replace(`{${k}}`, v);
@@ -55,11 +56,11 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   const tp = useCallback(
     (key: TranslationKey, params?: Record<string, string>): string => {
-      let text = (translations[lang] as Record<string, string>)?.[key];
+      let text = (translations[lang] as unknown as Record<string, string>)?.[key];
       if (!text && lang !== "fr") {
-        text = (translations.fr as Record<string, string>)?.[key];
+        text = (translations.fr as unknown as Record<string, string>)?.[key];
       }
-      if (!text) text = key;
+      if (!text) text = key as string;
       if (params) {
         for (const [k, v] of Object.entries(params)) {
           text = text.replace(`{${k}}`, v);

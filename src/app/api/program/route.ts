@@ -7,40 +7,24 @@ export const dynamic = "force-dynamic";
 // ─── Default program (used if none exists yet) ─────────────
 const DEFAULT_DAYS = JSON.stringify([
   {
-    day: "Day 1 — October 15, 2026",
-    subtitle: "Opening & Keynotes",
+    day: "3 Septembre 2026",
+    subtitle: "Programme de la journée",
     sessions: [
-      ["08:30", "Registration & Welcome Coffee"],
-      ["09:30", "Opening Ceremony"],
-      ["10:30", "Keynote: Future of Maternal Healthcare"],
-      ["14:00", "Parallel Sessions: Oncology & Endocrinology"],
-      ["17:00", "Welcome Reception"],
-    ],
-  },
-  {
-    day: "Day 2 — October 16, 2026",
-    subtitle: "Scientific Sessions",
-    sessions: [
-      ["09:00", "Plenary: Minimally Invasive Surgery"],
-      ["11:00", "Workshop: Laparoscopic Suturing"],
-      ["14:00", "Panel: Urogynecology Controversies"],
-      ["16:30", "Oral & Poster Presentations"],
-    ],
-  },
-  {
-    day: "Day 3 — October 17, 2026",
-    subtitle: "Workshops & Closing",
-    sessions: [
-      ["09:00", "Masterclass: Emergency Obstetrics"],
-      ["11:00", "Roundtable: Global Women's Health"],
-      ["14:00", "Free Communications"],
-      ["16:00", "Awards & Closing Ceremony"],
+      ["08:30", "Accueil & Café de bienvenue"],
+      ["09:00", "Cérémonie d'ouverture"],
+      ["09:30", "Conférences plénières"],
+      ["10:30", "Pause-café"],
+      ["11:00", "Ateliers & Sessions parallèles"],
+      ["12:30", "Déjeuner"],
+      ["14:00", "Communications orales"],
+      ["16:00", "Table ronde & Clôture"],
     ],
   },
 ]);
 
-const DEFAULT_VENUE = "Sheraton Annaba Hotel — Boulevard Che Guevara, Annaba 23000, Algeria";
-const DEFAULT_CONTACT = "contact@annabagyneco2026.dz";
+const DEFAULT_VENUE = "Hôtel Seybouse International — Annaba, Algérie";
+const DEFAULT_CONTACT = "journees.gynea.annaba2026@gmail.com";
+const DEFAULT_PHONE = "038871324 / 038871678";
 
 // ─── GET: public — return the current program ──────────────
 export async function GET() {
@@ -61,6 +45,7 @@ export async function GET() {
     days: JSON.parse(program.days),
     venue: program.venue,
     contact: program.contact,
+    phone: program.phone || DEFAULT_PHONE,
   });
 }
 
@@ -71,7 +56,7 @@ export async function PUT(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { days, venue, contact, _reset } = body;
+  const { days, venue, contact, phone, _reset } = body;
 
   // Reset to defaults
   if (_reset) {
@@ -83,6 +68,7 @@ export async function PUT(req: NextRequest) {
           days: DEFAULT_DAYS,
           venue: DEFAULT_VENUE,
           contact: DEFAULT_CONTACT,
+          phone: DEFAULT_PHONE,
         },
       });
     } else {
@@ -91,6 +77,7 @@ export async function PUT(req: NextRequest) {
           days: DEFAULT_DAYS,
           venue: DEFAULT_VENUE,
           contact: DEFAULT_CONTACT,
+          phone: DEFAULT_PHONE,
         },
       });
     }
@@ -98,6 +85,7 @@ export async function PUT(req: NextRequest) {
       days: JSON.parse(program.days),
       venue: program.venue,
       contact: program.contact,
+      phone: program.phone || DEFAULT_PHONE,
     });
   }
 
@@ -114,6 +102,7 @@ export async function PUT(req: NextRequest) {
         days: JSON.stringify(days),
         venue: venue ?? "",
         contact: contact ?? "",
+        phone: phone ?? "",
       },
     });
   } else {
@@ -122,6 +111,7 @@ export async function PUT(req: NextRequest) {
         days: JSON.stringify(days),
         venue: venue || DEFAULT_VENUE,
         contact: contact || DEFAULT_CONTACT,
+        phone: phone || DEFAULT_PHONE,
       },
     });
   }
@@ -130,5 +120,6 @@ export async function PUT(req: NextRequest) {
     days: JSON.parse(program.days),
     venue: program.venue,
     contact: program.contact,
+    phone: program.phone || DEFAULT_PHONE,
   });
 }

@@ -59,10 +59,10 @@ export default function AdminPage() {
   // ─── Program editing state ────────────────────────────────
   type Session = [string, string];
   type ProgDay = { day: string; subtitle: string; sessions: Session[] };
-  type ProgData = { days: ProgDay[]; venue: string; contact: string };
+  type ProgData = { days: ProgDay[]; venue: string; contact: string; phone: string };
 
   const [showProgram, setShowProgram] = useState(false);
-  const [program, setProgram] = useState<ProgData>({ days: [], venue: "", contact: "" });
+  const [program, setProgram] = useState<ProgData>({ days: [], venue: "", contact: "", phone: "" });
   const [progLoading, setProgLoading] = useState(false);
   const [progSaved, setProgSaved] = useState(false);
   const [progError, setProgError] = useState("");
@@ -593,8 +593,8 @@ export default function AdminPage() {
               </div>
             </div>
 
-            {/* Venue & Contact */}
-            <div className="grid sm:grid-cols-2 gap-4 mb-6 pb-6 border-b border-border">
+            {/* Venue, Contact & Phone */}
+            <div className="grid sm:grid-cols-3 gap-4 mb-6 pb-6 border-b border-border">
               <label className="flex flex-col gap-1.5">
                 <span className="text-xs font-semibold">{t("venueField")}</span>
                 <input
@@ -610,6 +610,15 @@ export default function AdminPage() {
                   value={program.contact}
                   onChange={(e) => setProgram((p) => ({ ...p, contact: e.target.value }))}
                   placeholder={t("contactPlaceholder")}
+                  className="px-4 py-3 border border-border rounded-md text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
+                />
+              </label>
+              <label className="flex flex-col gap-1.5">
+                <span className="text-xs font-semibold">📞 Téléphone</span>
+                <input
+                  value={program.phone || ""}
+                  onChange={(e) => setProgram((p) => ({ ...p, phone: e.target.value }))}
+                  placeholder="038871324 / 038871678"
                   className="px-4 py-3 border border-border rounded-md text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
                 />
               </label>

@@ -25,5 +25,6 @@ model Program {
   days      String   // JSON: [{day,subtitle,sessions:[[time,title],...]},...]
   venue     String   @default("")
   contact   String   @default("")
+  phone     String   @default("")
   updatedAt DateTime @updatedAt
 }

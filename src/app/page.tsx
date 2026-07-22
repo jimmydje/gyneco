@@ -88,10 +88,21 @@ export default function HomePage() {
     const days = program?.days ?? [];
     const venue = program?.venue ?? "";
     const contact = program?.contact ?? "";
+    const phone = (program as { phone?: string })?.phone ?? "";
 
     return (
-      <div className="min-h-screen bg-[#faf8f9] py-10 px-4">
-        <div className="max-w-2xl mx-auto">
+      <div
+        className="min-h-screen py-10 px-4 relative"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1920&q=80')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+        }}
+      >
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-white/90" />
+        <div className="max-w-2xl mx-auto relative z-10">
           {/* Language switcher */}
           <div className="text-right mb-4">
             <button
@@ -152,12 +163,17 @@ export default function HomePage() {
           </div>
 
           {venue && (
-            <div className="mt-10 text-center bg-white border border-border rounded-2xl p-6">
+            <div className="mt-10 text-center bg-white/95 backdrop-blur border border-border rounded-2xl p-6">
               <h3 className="font-heading text-lg font-semibold mb-1">{t("venue")}</h3>
               <p className="text-sm text-muted">{venue}</p>
+              {phone && (
+                <p className="text-sm text-primary font-semibold mt-2">
+                  📞 {phone}
+                </p>
+              )}
               {contact && (
                 <p className="text-xs text-muted mt-2">
-                  {t("contactPrefix")} {contact}
+                  ✉️ {contact}
                 </p>
               )}
             </div>
@@ -169,8 +185,18 @@ export default function HomePage() {
 
   // Registration form
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#faf4f5] via-[#e8dfe2] to-[#dce8f0] px-6 py-16">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
+    <div
+      className="min-h-screen flex items-center justify-center px-6 py-16 relative"
+      style={{
+        backgroundImage: `url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1920&q=80')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#faf4f5]/95 via-[#e8dfe2]/95 to-[#dce8f0]/95" />
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden relative z-10">
         <div className="text-center pt-10 px-10">
           {/* Language switcher */}
           <div className="text-right -mt-2 mb-1">

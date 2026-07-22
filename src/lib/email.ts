@@ -28,12 +28,12 @@ export async function sendConfirmationEmail({
     const isFr = lang === "fr";
     const { data, error } = await resend.emails.send({
       from: isFr
-        ? "4ᵉ Congrès de Gynécologie d'Annaba <noreply@annabagyneco2026.dz>"
-        : "4th Annaba Gynecology Conference <noreply@annabagyneco2026.dz>",
+        ? "Journées de Gynécologie d'Annaba <noreply@annabagyneco2026.dz>"
+        : "Annaba Gynecology Conference <noreply@annabagyneco2026.dz>",
       to: [to],
       subject: isFr
-        ? "Inscription confirmée — 4ᵉ Congrès de Gynécologie & Obstétrique d'Annaba"
-        : "Registration Confirmed — 4th Annaba Gynecology & Obstetrics Conference",
+        ? "Inscription confirmée — Journées de Gynécologie & Obstétrique d'Annaba"
+        : "Registration Confirmed — Annaba Gynecology & Obstetrics Conference",
       html: isFr ? templateFr({ firstName, lastName }) : templateEn({ firstName, lastName }),
     });
 
@@ -57,7 +57,6 @@ function templateEn({
   firstName: string;
   lastName: string;
 }) {
-  const label = (key: string) => key;
   return buildTemplate({ firstName, lastName, isFr: false });
 }
 
@@ -83,53 +82,72 @@ function buildTemplate({
   const t = isFr
     ? {
         title: "Inscription confirmée",
-        subtitle: "4ᵉ Congrès de Gynécologie & Obstétrique d'Annaba",
+        subtitle: "Journées de Gynécologie & Obstétrique d'Annaba",
         dear: `Cher/Chère <strong>${firstName} ${lastName}</strong>`,
-        body: "Nous vous remercions de votre inscription au <strong>4ᵉ Congrès de Gynécologie & Obstétrique d'Annaba</strong>. Votre inscription a bien été reçue et confirmée.",
+        body: "Nous vous remercions de votre inscription aux <strong>Journées de Gynécologie & Obstétrique d'Annaba</strong>. Votre inscription a bien été reçue et confirmée.",
         eventDetails: "Détails de l'événement",
-        dates: "Dates",
+        dates: "Date",
         venue: "Lieu",
         location: "Adresse",
         start: "Début",
-        datesValue: "15–17 octobre 2026",
-        venueValue: "Hôtel Sheraton Annaba",
-        locationValue: "Boulevard Che Guevara, Annaba 23000, Algérie",
-        startValue: "8h30 tous les jours",
-        program: "Programme du Congrès",
-        day1: "Jour 1 — 15 octobre 2026",
-        day2: "Jour 2 — 16 octobre 2026",
-        day3: "Jour 3 — 17 octobre 2026",
-        contact: "Pour toute question, contactez",
+        datesValue: "03 septembre 2026",
+        venueValue: "Hôtel Seybouse International",
+        locationValue: "Annaba, Algérie",
+        startValue: "8h30",
+        program: "Programme",
+        day1: "03 septembre 2026",
+        contact: "Pour plus d'info :",
+        phone: "Tél : 038871324 / 038871678",
         closing: "Nous avons hâte de vous accueillir à Annaba !",
-        footer: "© 2026 4ᵉ Congrès de Gynécologie & Obstétrique d'Annaba",
+        footer: "© 2026 Journées de Gynécologie & Obstétrique d'Annaba",
       }
     : {
         title: "Registration Confirmed",
-        subtitle: "4th Annaba Gynecology & Obstetrics Conference",
+        subtitle: "Annaba Gynecology & Obstetrics Conference",
         dear: `Dear <strong>${firstName} ${lastName}</strong>`,
-        body: "Thank you for registering for the <strong>4th Annaba Gynecology & Obstetrics Conference</strong>. Your registration has been successfully received and confirmed.",
+        body: "Thank you for registering for the <strong>Annaba Gynecology & Obstetrics Conference</strong>. Your registration has been successfully received and confirmed.",
         eventDetails: "Event Details",
-        dates: "Dates",
+        dates: "Date",
         venue: "Venue",
         location: "Location",
         start: "Start",
-        datesValue: "October 15–17, 2026",
-        venueValue: "Sheraton Annaba Hotel",
-        locationValue: "Boulevard Che Guevara, Annaba 23000, Algeria",
-        startValue: "8:30 AM daily",
-        program: "Conference Program",
-        day1: "Day 1 — October 15, 2026",
-        day2: "Day 2 — October 16, 2026",
-        day3: "Day 3 — October 17, 2026",
-        contact: "For questions, contact",
+        datesValue: "September 3, 2026",
+        venueValue: "Hôtel Seybouse International",
+        locationValue: "Annaba, Algeria",
+        startValue: "8:30 AM",
+        program: "Program",
+        day1: "September 3, 2026",
+        contact: "For more info:",
+        phone: "Phone: 038871324 / 038871678",
         closing: "We look forward to welcoming you to Annaba!",
-        footer: "© 2026 4th Annaba Gynecology & Obstetrics Conference",
+        footer: "© 2026 Annaba Gynecology & Obstetrics Conference",
       };
 
   const sessions = [
-    { day: t.day1, rows: [["08:30", isFr ? "Accueil & Café de bienvenue" : "Registration & Welcome Coffee"], ["09:30", isFr ? "Cérémonie d'ouverture" : "Opening Ceremony"], ["10:30", isFr ? "Conférence : L'avenir de la santé maternelle" : "Keynote: Future of Maternal Healthcare"], ["14:00", isFr ? "Sessions parallèles : Oncologie & Endocrinologie" : "Parallel Sessions: Oncology & Endocrinology"], ["17:00", isFr ? "Réception de bienvenue" : "Welcome Reception"]] },
-    { day: t.day2, rows: [["09:00", isFr ? "Plénière : Chirurgie mini-invasive" : "Plenary: Minimally Invasive Surgery"], ["11:00", isFr ? "Atelier : Sutures laparoscopiques" : "Workshop: Laparoscopic Suturing"], ["14:00", isFr ? "Panel : Controverses en urogynécologie" : "Panel: Urogynecology Controversies"], ["16:30", isFr ? "Présentations orales & Posters" : "Oral & Poster Presentations"]] },
-    { day: t.day3, rows: [["09:00", isFr ? "Masterclass : Urgences obstétricales" : "Masterclass: Emergency Obstetrics"], ["11:00", isFr ? "Table ronde : Santé des femmes dans le monde" : "Roundtable: Global Women's Health"], ["14:00", isFr ? "Communications libres" : "Free Communications"], ["16:00", isFr ? "Remise des prix & Clôture" : "Awards & Closing Ceremony"]] },
+    {
+      day: t.day1,
+      rows: isFr
+        ? [
+            ["08:30", "Accueil & Café de bienvenue"],
+            ["09:00", "Cérémonie d'ouverture"],
+            ["09:30", "Conférences plénières"],
+            ["10:30", "Pause-café"],
+            ["11:00", "Ateliers & Sessions parallèles"],
+            ["12:30", "Déjeuner"],
+            ["14:00", "Communications orales"],
+            ["16:00", "Table ronde & Clôture"],
+          ]
+        : [
+            ["08:30", "Registration & Welcome Coffee"],
+            ["09:00", "Opening Ceremony"],
+            ["09:30", "Plenary Lectures"],
+            ["10:30", "Coffee Break"],
+            ["11:00", "Workshops & Parallel Sessions"],
+            ["12:30", "Lunch"],
+            ["14:00", "Oral Communications"],
+            ["16:00", "Round Table & Closing"],
+          ],
+    },
   ];
 
   return `<!DOCTYPE html>
@@ -174,8 +192,11 @@ ${d.rows.map(([time, title]) => `<tr><td style="font-size:13px;color:#5a5a72;wid
   )
   .join("")}
 
+<p style="font-size:13px;color:#8a8a9a;line-height:1.6;margin:0 0 4px;">
+${t.phone}
+</p>
 <p style="font-size:13px;color:#8a8a9a;line-height:1.6;margin:0 0 8px;">
-${t.contact} <a href="mailto:contact@annabagyneco2026.dz" style="color:#99324d;">contact@annabagyneco2026.dz</a>
+${t.contact} <a href="mailto:journees.gynea.annaba2026@gmail.com" style="color:#99324d;">journees.gynea.annaba2026@gmail.com</a>
 </p>
 <p style="font-size:13px;color:#8a8a9a;line-height:1.6;margin:0;">
 ${t.closing}

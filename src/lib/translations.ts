@@ -2,9 +2,9 @@ export const translations = {
   en: {
     // ─── Common ──────────────────────────────────
     appTitle: "4th Annaba Gynecology & Obstetrics Conference",
-    appSubtitle: "October 15–17, 2026 • Sheraton Annaba Hotel",
+    appSubtitle: "September 3, 2026 • Hôtel Seybouse Annaba",
     venue: "Venue",
-    contactPrefix: "For questions:",
+    contactPrefix: "For more info:",
     loading: "Loading...",
     none: "None",
     save: "Save",
@@ -123,9 +123,9 @@ export const translations = {
   fr: {
     // ─── Common ──────────────────────────────────
     appTitle: "4ᵉ Congrès de Gynécologie & Obstétrique d'Annaba",
-    appSubtitle: "15–17 octobre 2026 • Hôtel Sheraton Annaba",
+    appSubtitle: "03 septembre 2026 • Hôtel Seybouse Annaba",
     venue: "Lieu",
-    contactPrefix: "Pour toute question :",
+    contactPrefix: "Pour plus d'info :",
     loading: "Chargement...",
     none: "Aucun",
     save: "Enregistrer",
