@@ -1,65 +1,319 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState, useEffect } from "react";
+import { useI18n } from "@/lib/i18n";
+
+const GRADES = [
+  "Externe", "Interne", "Médecin généraliste",
+  "Résident", "Gynécologue obstétricien", "Autre",
+] as const;
+
+type FormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  dateOfBirth: string;
+  grade: string;
+  specialite: string;
+  workplace: string;
+  phone: string;
+};
+
+type ProgramDay = {
+  day: string;
+  subtitle: string;
+  sessions: [string, string][];
+};
+
+type ProgramData = {
+  days: ProgramDay[];
+  venue: string;
+  contact: string;
+};
+
+const EMPTY: FormData = {
+  firstName: "", lastName: "", email: "", dateOfBirth: "",
+  grade: "", specialite: "", workplace: "", phone: "",
+};
+
+export default function HomePage() {
+  const { t, lang, setLang } = useI18n();
+  const [form, setForm] = useState<FormData>(EMPTY);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [registered, setRegistered] = useState(false);
+  const [program, setProgram] = useState<ProgramData | null>(null);
+
+  // Fetch the program when registration completes
+  useEffect(() => {
+    if (registered && !program) {
+      fetch("/api/program")
+        .then((r) => r.json())
+        .then(setProgram)
+        .catch(() => {});
+    }
+  }, [registered, program]);
+
+  function update(field: keyof FormData, value: string) {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, lang }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Registration failed.");
+        return;
+      }
+
+      setRegistered(true);
+    } catch {
+      setError("Unable to connect. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (registered) {
+    const days = program?.days ?? [];
+    const venue = program?.venue ?? "";
+    const contact = program?.contact ?? "";
+
+    return (
+      <div className="min-h-screen bg-[#faf8f9] py-10 px-4">
+        <div className="max-w-2xl mx-auto">
+          {/* Language switcher */}
+          <div className="text-right mb-4">
+            <button
+              onClick={() => setLang(lang === "fr" ? "en" : "fr")}
+              className="text-xs px-3 py-1.5 border border-border rounded-full hover:bg-primary-lighter transition-colors"
+            >
+              {lang === "fr" ? t("switchToLabel") : t("languageLabel")}
+            </button>
+          </div>
+
+          <div className="text-center mb-10">
+            <span className="text-4xl">♀</span>
+            <h1 className="font-heading text-3xl font-bold mt-3">
+              {t("appTitle")}
+            </h1>
+            <p className="text-sm text-muted mt-2">
+              {t("thankYou", { name: form.firstName })} {t("confirmationSent", { email: form.email })}
+            </p>
+            <div className="inline-block mt-4 px-4 py-2 bg-success-light text-success-dark rounded-full text-sm font-semibold">
+              {t("confirmed")}
+            </div>
+          </div>
+
+          <h2 className="font-heading text-2xl font-bold text-center mb-8">
+            {t("conferenceProgram")}
+          </h2>
+
+          {days.length === 0 && (
+            <p className="text-center text-muted py-8">
+              {program ? (lang === "fr" ? "Le programme sera annoncé prochainement." : "The program will be announced soon.") : t("loadingProgram")}
+            </p>
+          )}
+
+          <div className="space-y-6">
+            {days.map((day) => (
+              <div
+                key={day.day}
+                className="bg-white border border-border rounded-2xl p-6 shadow-sm"
+              >
+                <div className="mb-4">
+                  <span className="text-xs font-semibold text-primary uppercase tracking-wider">
+                    {day.day}
+                  </span>
+                  <p className="text-sm text-muted mt-0.5">{day.subtitle}</p>
+                </div>
+                <ul className="divide-y divide-[#f3eff0]">
+                  {day.sessions.map(([time, title]) => (
+                    <li key={time + title} className="flex gap-3 py-2.5 text-sm">
+                      <time className="font-semibold text-primary min-w-[52px] text-xs">
+                        {time}
+                      </time>
+                      <span>{title}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          {venue && (
+            <div className="mt-10 text-center bg-white border border-border rounded-2xl p-6">
+              <h3 className="font-heading text-lg font-semibold mb-1">{t("venue")}</h3>
+              <p className="text-sm text-muted">{venue}</p>
+              {contact && (
+                <p className="text-xs text-muted mt-2">
+                  {t("contactPrefix")} {contact}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Registration form
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#faf4f5] via-[#e8dfe2] to-[#dce8f0] px-6 py-16">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
+        <div className="text-center pt-10 px-10">
+          {/* Language switcher */}
+          <div className="text-right -mt-2 mb-1">
+            <button
+              onClick={() => setLang(lang === "fr" ? "en" : "fr")}
+              className="text-xs px-3 py-1.5 border border-border rounded-full hover:bg-primary-lighter transition-colors"
+            >
+              {lang === "fr" ? t("switchToLabel") : t("languageLabel")}
+            </button>
+          </div>
+          <span className="text-3xl text-primary">♀</span>
+          <h1 className="font-heading text-2xl font-bold mt-3">
+            {t("registerTitle")}
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-sm text-muted mt-1">
+            {t("appSubtitle")}
+          </p>
+          <p className="text-sm text-primary font-medium mt-3">
+            {t("registerPrompt")}
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="px-10 py-7">
+          {error && (
+            <div className="bg-danger-light text-danger text-sm px-4 py-3 rounded-md mb-5">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div className="grid sm:grid-cols-2 gap-4">
+              <label className="flex flex-col gap-1.5">
+                <span className="text-xs font-semibold">{t("firstName")}</span>
+                <input
+                  value={form.firstName}
+                  onChange={(e) => update("firstName", e.target.value)}
+                  placeholder={t("firstName")}
+                  className="px-4 py-3 border border-border rounded-md text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
+                  required
+                />
+              </label>
+              <label className="flex flex-col gap-1.5">
+                <span className="text-xs font-semibold">{t("lastName")}</span>
+                <input
+                  value={form.lastName}
+                  onChange={(e) => update("lastName", e.target.value)}
+                  placeholder={t("lastName")}
+                  className="px-4 py-3 border border-border rounded-md text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
+                  required
+                />
+              </label>
+            </div>
+
+            <label className="flex flex-col gap-1.5">
+              <span className="text-xs font-semibold">{t("email")}</span>
+              <input
+                type="email"
+                value={form.email}
+                onChange={(e) => update("email", e.target.value)}
+                placeholder="you@example.com"
+                className="px-4 py-3 border border-border rounded-md text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
+                required
+              />
+            </label>
+
+            <label className="flex flex-col gap-1.5">
+              <span className="text-xs font-semibold">{t("dateOfBirth")}</span>
+              <input
+                type="date"
+                value={form.dateOfBirth}
+                onChange={(e) => update("dateOfBirth", e.target.value)}
+                className="px-4 py-3 border border-border rounded-md text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
+                required
+              />
+            </label>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              <label className="flex flex-col gap-1.5">
+                <span className="text-xs font-semibold">{t("grade")}</span>
+                <select
+                  value={form.grade}
+                  onChange={(e) => update("grade", e.target.value)}
+                  className="px-4 py-3 border border-border rounded-md text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
+                  required
+                >
+                  <option value="">{t("selectGrade")}</option>
+                  {GRADES.map((g) => (
+                    <option key={g} value={g}>{g}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="flex flex-col gap-1.5">
+                <span className="text-xs font-semibold">{t("specialite")}</span>
+                <input
+                  value={form.specialite}
+                  onChange={(e) => update("specialite", e.target.value)}
+                  placeholder={t("specialitePlaceholder")}
+                  className="px-4 py-3 border border-border rounded-md text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
+                />
+              </label>
+            </div>
+
+            <label className="flex flex-col gap-1.5">
+              <span className="text-xs font-semibold">{t("workplace")}</span>
+              <input
+                value={form.workplace}
+                onChange={(e) => update("workplace", e.target.value)}
+                placeholder={t("workplacePlaceholder")}
+                className="px-4 py-3 border border-border rounded-md text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
+                required
+              />
+            </label>
+
+            <label className="flex flex-col gap-1.5">
+              <span className="text-xs font-semibold">{t("phone")}</span>
+              <input
+                type="tel"
+                value={form.phone}
+                onChange={(e) => update("phone", e.target.value)}
+                placeholder={t("phonePlaceholder")}
+                className="px-4 py-3 border border-border rounded-md text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
+              />
+            </label>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3.5 text-base font-medium bg-primary text-white rounded-md hover:bg-primary-hover disabled:opacity-60 transition-colors"
+            >
+              {loading ? t("registering") : t("registerBtn")}
+            </button>
+          </form>
+
+          <div className="mt-5 pt-4 border-t border-border text-center">
+            <a
+              href="/admin"
+              className="text-xs text-muted hover:text-primary transition-colors"
+            >
+              {t("adminLogin")}
+            </a>
+          </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

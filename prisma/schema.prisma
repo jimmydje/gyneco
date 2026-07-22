@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  firstName    String
+  lastName     String
+  dateOfBirth  DateTime
+  grade        String   @map("profession")
+  specialite   String   @default("")
+  workplace    String
+  phone        String?
+  registeredAt DateTime @default(now())
+}
+
+model Program {
+  id        String   @id @default(cuid())
+  days      String   // JSON: [{day,subtitle,sessions:[[time,title],...]},...]
+  venue     String   @default("")
+  contact   String   @default("")
+  updatedAt DateTime @updatedAt
+}
