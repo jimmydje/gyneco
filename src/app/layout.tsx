@@ -17,9 +17,9 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "4th Annaba Gynecology & Obstetrics Conference",
+  title: "4th Annaba Gynecology & Obstetrics Day",
   description:
-    "Register for the 4th Annaba Gynecology & Obstetrics Conference. October 15–17, 2026.",
+    "Register for the 4th Annaba Gynecology & Obstetrics Day. October 15–17, 2026.",
 };
 
 export default function RootLayout({

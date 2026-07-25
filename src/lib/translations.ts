@@ -1,7 +1,7 @@
 export const translations = {
   en: {
     // ─── Common ──────────────────────────────────
-    appTitle: "4th Annaba Gynecology & Obstetrics Conference",
+    appTitle: "4th Annaba Gynecology & Obstetrics Day",
     appSubtitle: "September 3, 2026 • Hôtel Seybouse Annaba",
     venue: "Venue",
     contactPrefix: "For more info:",
@@ -13,7 +13,7 @@ export const translations = {
     back: "← Back",
 
     // ─── Register form ───────────────────────────
-    registerTitle: "4th Annaba Gynecology & Obstetrics Conference",
+    registerTitle: "4th Annaba Gynecology & Obstetrics Day",
     registerPrompt: "Register below to receive the program",
     firstName: "First Name",
     lastName: "Last Name",
@@ -43,7 +43,7 @@ export const translations = {
     thankYou: "Thank you for registering, {name}!",
     confirmationSent: "A confirmation has been sent to {email}.",
     confirmed: "✓ Registration Confirmed",
-    conferenceProgram: "Conference Program",
+    conferenceProgram: "Day Program",
     loadingProgram: "Loading program...",
 
     // ─── Admin login ─────────────────────────────
@@ -122,7 +122,7 @@ export const translations = {
 
   fr: {
     // ─── Common ──────────────────────────────────
-    appTitle: "4ᵉ Congrès de Gynécologie & Obstétrique d'Annaba",
+    appTitle: "4ᵉ Journée de Gynécologie & Obstétrique d'Annaba",
     appSubtitle: "03 septembre 2026 • Hôtel Seybouse Annaba",
     venue: "Lieu",
     contactPrefix: "Pour plus d'info :",
@@ -134,7 +134,7 @@ export const translations = {
     back: "← Retour",
 
     // ─── Register form ───────────────────────────
-    registerTitle: "4ᵉ Congrès de Gynécologie & Obstétrique d'Annaba",
+    registerTitle: "4ᵉ Journée de Gynécologie & Obstétrique d'Annaba",
     registerPrompt: "Inscrivez-vous ci-dessous pour recevoir le programme",
     firstName: "Prénom",
     lastName: "Nom",
@@ -164,7 +164,7 @@ export const translations = {
     thankYou: "Merci de vous être inscrit(e), {name} !",
     confirmationSent: "Une confirmation a été envoyée à {email}.",
     confirmed: "✓ Inscription confirmée",
-    conferenceProgram: "Programme du Congrès",
+    conferenceProgram: "Programme de la Journée",
     loadingProgram: "Chargement du programme...",
 
     // ─── Admin login ─────────────────────────────
