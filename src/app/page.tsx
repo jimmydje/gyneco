@@ -93,7 +93,6 @@ export default function HomePage() {
     return (
       <div
         className="min-h-screen py-10 px-4 relative">
-      >
         {/* Overlay */}
         <div className="absolute inset-0 bg-white/40" />
         <div className="max-w-2xl mx-auto relative z-10">
