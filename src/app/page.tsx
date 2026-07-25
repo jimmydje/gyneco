@@ -92,11 +92,12 @@ export default function HomePage() {
 
     return (
       <div
-        className="min-h-screen py-10 px-4 relative"
+        className="min-h-screen py-10 px-4 relative bg-fixed-mobile-fix"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1920&q=80')`,
+          backgroundImage: `url('/fond.jpg')`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "center center",
+          backgroundRepeat: "no-repeat",
           backgroundAttachment: "fixed",
         }}
       >
@@ -186,11 +187,12 @@ export default function HomePage() {
   // Registration form
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-8 sm:py-16 relative"
+      className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-8 sm:py-16 relative bg-fixed-mobile-fix"
       style={{
-        backgroundImage: `url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1920&q=80')`,
+        backgroundImage: `url('/fond.jpg')`,
         backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundPosition: "center center",
+        backgroundRepeat: "no-repeat",
         backgroundAttachment: "fixed",
       }}
     >

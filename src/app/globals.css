@@ -30,3 +30,10 @@ body {
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Fix background-attachment: fixed on iOS Safari and touch devices */
+@supports (-webkit-touch-callout: none) or (pointer: coarse) {
+  .bg-fixed-mobile-fix {
+    background-attachment: scroll !important;
+  }
+}
