@@ -92,14 +92,7 @@ export default function HomePage() {
 
     return (
       <div
-        className="min-h-screen py-10 px-4 relative bg-fixed-mobile-fix"
-        style={{
-          backgroundImage: `url('/fond.jpg')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center center",
-          backgroundRepeat: "no-repeat",
-          backgroundAttachment: "fixed",
-        }}
+        className="min-h-screen py-10 px-4 relative">
       >
         {/* Overlay */}
         <div className="absolute inset-0 bg-white/40" />
@@ -187,14 +180,7 @@ export default function HomePage() {
   // Registration form
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-8 sm:py-16 relative bg-fixed-mobile-fix"
-      style={{
-        backgroundImage: `url('/fond.jpg')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center center",
-        backgroundRepeat: "no-repeat",
-        backgroundAttachment: "fixed",
-      }}
+      className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-8 sm:py-16 relative">
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#faf4f5]/50 via-[#e8dfe2]/50 to-[#dce8f0]/50" />

@@ -304,8 +304,9 @@ export default function AdminPage() {
   // ─── Login screen ─────────────────────────────────────────
   if (!loggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#faf4f5] via-[#e8dfe2] to-[#dce8f0] px-4 sm:px-6">
-        <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden">
+      <div className="min-h-screen flex items-center justify-center relative px-4 sm:px-6">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#faf4f5]/50 via-[#e8dfe2]/50 to-[#dce8f0]/50" />
+        <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden relative z-10">
           <div className="text-center pt-8 sm:pt-10 px-6 sm:px-10">
             <div className="text-right -mt-2 mb-1">
               <button
@@ -370,7 +371,10 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf8f9]">
+    <div className="min-h-screen relative">
+      {/* Overlay for readability */}
+      <div className="absolute inset-0 bg-[#faf8f9]/80" />
+      <div className="relative z-10">
       {/* Header */}
       <header className="bg-white border-b border-border px-4 sm:px-6 py-3 sm:py-4 sticky top-0 z-10">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -863,6 +867,7 @@ export default function AdminPage() {
           {users.length !== 1 ? t("registrants") : t("registrant")}
         </p>
       </main>
+      </div>
     </div>
   );
 }

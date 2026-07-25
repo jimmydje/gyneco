@@ -32,8 +32,21 @@ export default function RootLayout({
       lang="fr"
       className={`${inter.variable} ${playfairDisplay.variable} h-full antialiased`}
     >
-      <body className="min-h-full">
-        <I18nProvider>{children}</I18nProvider>
+      <body className="min-h-full relative">
+        {/* Full-screen background image */}
+        <div
+          className="fixed inset-0 z-0 bg-fixed-mobile-fix"
+          style={{
+            backgroundImage: `url('/fond.jpg')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center center",
+            backgroundRepeat: "no-repeat",
+            backgroundAttachment: "fixed",
+          }}
+        />
+        <div className="relative z-10">
+          <I18nProvider>{children}</I18nProvider>
+        </div>
       </body>
     </html>
   );
