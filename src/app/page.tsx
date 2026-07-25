@@ -180,7 +180,6 @@ export default function HomePage() {
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-8 sm:py-16 relative">
-    >
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#faf4f5]/50 via-[#e8dfe2]/50 to-[#dce8f0]/50" />
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden relative z-10">
