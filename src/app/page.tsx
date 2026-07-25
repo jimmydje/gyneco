@@ -102,7 +102,7 @@ export default function HomePage() {
         }}
       >
         {/* Overlay */}
-        <div className="absolute inset-0 bg-white/90" />
+        <div className="absolute inset-0 bg-white/40" />
         <div className="max-w-2xl mx-auto relative z-10">
           {/* Language switcher */}
           <div className="text-right mb-4">
@@ -197,7 +197,7 @@ export default function HomePage() {
       }}
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#faf4f5]/95 via-[#e8dfe2]/95 to-[#dce8f0]/95" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#faf4f5]/50 via-[#e8dfe2]/50 to-[#dce8f0]/50" />
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden relative z-10">
         <div className="text-center pt-8 sm:pt-10 px-6 sm:px-10">
           {/* Language switcher */}
