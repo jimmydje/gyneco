@@ -203,6 +203,9 @@ export default function HomePage() {
           <p className="text-sm text-primary font-medium mt-3">
             {t("registerPrompt")}
           </p>
+          <p className="text-sm text-muted mt-2 font-semibold">
+            {t("registrationFee")}
+          </p>
         </div>
 
         <div className="px-6 sm:px-10 py-5 sm:py-7">

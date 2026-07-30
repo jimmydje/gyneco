@@ -15,6 +15,7 @@ export const translations = {
     // ─── Register form ───────────────────────────
     registerTitle: "4th Annaba Gynecology & Obstetrics Day",
     registerPrompt: "Register below to receive the program",
+    registrationFee: "Registration fee: 2000 DA — Payment on site on the day of the event",
     firstName: "First Name",
     lastName: "Last Name",
     email: "Email",
@@ -136,6 +137,7 @@ export const translations = {
     // ─── Register form ───────────────────────────
     registerTitle: "4ᵉ Journée de Gynécologie & Obstétrique d'Annaba",
     registerPrompt: "Inscrivez-vous ci-dessous pour recevoir le programme",
+    registrationFee: "Prix d'inscription : 2000 DA — Paiement sur place le jour J",
     firstName: "Prénom",
     lastName: "Nom",
     email: "Email",
