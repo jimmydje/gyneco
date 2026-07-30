@@ -44,12 +44,18 @@ export async function GET() {
   // 3. Check domain status
   try {
     const domains = await resend.domains.list();
-    const domain = domains.data?.find(
-      (d: { name: string }) => d.name === "gynecoannaba.com"
-    );
+    const domainList = domains.data?.data;
+    const domain = Array.isArray(domainList)
+      ? domainList.find((d: { name: string }) => d.name === "gynecoannaba.com")
+      : undefined;
     results.domain = domain
       ? { found: true, status: (domain as Record<string, unknown>).status }
-      : { found: false, allDomains: domains.data?.map((d: { name: string }) => d.name) };
+      : {
+          found: false,
+          allDomains: Array.isArray(domainList)
+            ? domainList.map((d: { name: string }) => d.name)
+            : "unavailable",
+        };
   } catch (err) {
     results.domain = {
       found: false,
