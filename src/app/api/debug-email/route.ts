@@ -6,7 +6,6 @@ import { Resend } from "resend";
 export async function GET() {
   const results: Record<string, unknown> = {};
 
-  // 1. Check if API key is set
   const apiKey = process.env.RESEND_API_KEY;
   results.apiKeyPresent = !!apiKey;
   results.apiKeyPreview = apiKey
@@ -22,17 +21,17 @@ export async function GET() {
 
   const resend = new Resend(apiKey);
 
-  // 2. Try sending a test email
+  // Try sending a test email
   try {
     const { data, error } = await resend.emails.send({
       from: "Gyneco Test <noreply@gynecoannaba.com>",
-      to: [apiKey.startsWith("re_") ? "omardjemil25@gmail.com" : "test@example.com"],
+      to: ["omardjemil25@gmail.com"],
       subject: "Gyneco — Resend Diagnostic Test",
       html: "<p>If you received this, Resend is configured correctly.</p>",
     });
 
     results.sendResult = error
-      ? { success: false, error: error }
+      ? { success: false, error }
       : { success: true, id: data?.id };
   } catch (err) {
     results.sendResult = {
@@ -41,21 +40,17 @@ export async function GET() {
     };
   }
 
-  // 3. Check domain status
+  // Check domain status
   try {
     const domains = await resend.domains.list();
-    const domainList = domains.data?.data;
-    const domain = Array.isArray(domainList)
-      ? domainList.find((d: { name: string }) => d.name === "gynecoannaba.com")
-      : undefined;
+    const raw = domains as unknown as {
+      data?: { data?: Array<{ name: string; status: string }> };
+    };
+    const list = raw?.data?.data ?? [];
+    const domain = list.find((d) => d.name === "gynecoannaba.com");
     results.domain = domain
-      ? { found: true, status: (domain as Record<string, unknown>).status }
-      : {
-          found: false,
-          allDomains: Array.isArray(domainList)
-            ? domainList.map((d: { name: string }) => d.name)
-            : "unavailable",
-        };
+      ? { found: true, status: domain.status }
+      : { found: false, allDomains: list.map((d) => d.name) };
   } catch (err) {
     results.domain = {
       found: false,
