@@ -123,6 +123,18 @@ export default function HomePage() {
             {t("conferenceProgram")}
           </h2>
 
+          {/* PDF Download */}
+          <div className="text-center mb-6">
+            <a
+              href={`/api/program/pdf?lang=${lang}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-hover transition-colors"
+            >
+              {t("downloadProgramPdf")}
+            </a>
+          </div>
+
           {days.length === 0 && (
             <p className="text-center text-muted py-8">
               {program ? (lang === "fr" ? "Le programme sera annoncé prochainement." : "The program will be announced soon.") : t("loadingProgram")}
@@ -202,9 +214,6 @@ export default function HomePage() {
           </p>
           <p className="text-sm text-primary font-medium mt-3">
             {t("registerPrompt")}
-          </p>
-          <p className="text-sm text-muted mt-2 font-semibold">
-            {t("registrationFee")}
           </p>
         </div>
 
@@ -317,6 +326,10 @@ export default function HomePage() {
             >
               {loading ? t("registering") : t("registerBtn")}
             </button>
+
+            <p className="text-sm text-muted mt-3 text-center font-semibold">
+              {t("registrationFee")}
+            </p>
           </form>
 
           <div className="mt-5 pt-4 border-t border-border text-center">

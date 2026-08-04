@@ -38,7 +38,8 @@ export const translations = {
     phonePlaceholder: "+213 ...",
     registerBtn: "Register",
     registering: "Registering...",
-    adminLogin: "🔒 Admin Login",
+    adminLogin: "🔒 Login",
+    downloadProgramPdf: "📄 Download Program (PDF)",
 
     // ─── Success page ────────────────────────────
     thankYou: "Thank you for registering, {name}!",
@@ -89,6 +90,7 @@ export const translations = {
     registrants: "registrants",
 
     // ─── Program editor ──────────────────────────
+    viewProgramPdf: "📄 View PDF",
     editProgram: "📋 Edit Program",
     closeEditor: "✕ Close Program Editor",
     programEditor: "Conference Program Editor",
@@ -96,7 +98,7 @@ export const translations = {
     saving: "Saving...",
     saved: "✓ Saved!",
     venueField: "Venue",
-    venuePlaceholder: "e.g. Sheraton Annaba Hotel — ...",
+    venuePlaceholder: "e.g. Hôtel Seybouse International — ...",
     contactField: "Contact Email",
     contactPlaceholder: "contact@example.com",
     day: "Day",
@@ -160,7 +162,8 @@ export const translations = {
     phonePlaceholder: "+213 ...",
     registerBtn: "S'inscrire",
     registering: "Inscription...",
-    adminLogin: "🔒 Connexion Admin",
+    adminLogin: "🔒 Connexion",
+    downloadProgramPdf: "📄 Télécharger le programme (PDF)",
 
     // ─── Success page ────────────────────────────
     thankYou: "Merci de vous être inscrit(e), {name} !",
@@ -211,6 +214,7 @@ export const translations = {
     registrants: "inscrits",
 
     // ─── Program editor ──────────────────────────
+    viewProgramPdf: "📄 Voir le PDF",
     editProgram: "📋 Modifier le programme",
     closeEditor: "✕ Fermer l'éditeur",
     programEditor: "Éditeur du programme",
@@ -218,7 +222,7 @@ export const translations = {
     saving: "Enregistrement...",
     saved: "✓ Enregistré !",
     venueField: "Lieu",
-    venuePlaceholder: "ex: Hôtel Sheraton Annaba — ...",
+    venuePlaceholder: "ex: Hôtel Seybouse International — ...",
     contactField: "Email de contact",
     contactPlaceholder: "contact@exemple.com",
     day: "Jour",

@@ -1,5 +1,8 @@
 import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
+import { generateProgramPdf } from "@/lib/pdf";
+import { existsSync, readFileSync } from "fs";
+import { join } from "path";
 
 const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
@@ -66,6 +69,26 @@ export async function sendConfirmationEmail({
 
   try {
     const isFr = lang === "fr";
+
+    // Use uploaded PDF if available, otherwise generate
+    const pdfPath = join(process.cwd(), "public", "program.pdf");
+    let pdfBuffer: Buffer;
+    if (existsSync(pdfPath)) {
+      pdfBuffer = readFileSync(pdfPath);
+    } else {
+      pdfBuffer = generateProgramPdf({
+        days,
+        venue,
+        phone,
+        contact,
+        lang: lang || "fr",
+      });
+    }
+
+    const pdfFilename = isFr
+      ? "programme-gynecologie-annaba-2026.pdf"
+      : "program-annaba-gynecology-2026.pdf";
+
     const fromName = isFr
       ? "Journées Gynécologie Annaba"
       : "Annaba Gynecology Conference";
@@ -85,6 +108,13 @@ export async function sendConfirmationEmail({
         phone,
         contact,
       }),
+      attachments: [
+        {
+          filename: pdfFilename,
+          content: pdfBuffer.toString("base64"),
+          contentType: "application/pdf",
+        },
+      ],
     });
 
     if (error) {

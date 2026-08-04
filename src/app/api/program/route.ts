@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { isAdmin } from "@/lib/auth";
+import { existsSync } from "fs";
+import { join } from "path";
 
 export const dynamic = "force-dynamic";
 
@@ -46,6 +48,7 @@ export async function GET() {
     venue: program.venue,
     contact: program.contact,
     phone: program.phone || DEFAULT_PHONE,
+    hasPdf: existsSync(join(process.cwd(), "public", "program.pdf")),
   });
 }
 
@@ -96,14 +99,15 @@ export async function PUT(req: NextRequest) {
   let program = await prisma.program.findFirst();
 
   if (program) {
+    const updateData: Record<string, unknown> = {
+      days: JSON.stringify(days),
+      venue: venue ?? "",
+      contact: contact ?? "",
+      phone: phone ?? "",
+    };
     program = await prisma.program.update({
       where: { id: program.id },
-      data: {
-        days: JSON.stringify(days),
-        venue: venue ?? "",
-        contact: contact ?? "",
-        phone: phone ?? "",
-      },
+      data: updateData,
     });
   } else {
     program = await prisma.program.create({

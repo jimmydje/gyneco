@@ -66,6 +66,8 @@ export default function AdminPage() {
   const [progLoading, setProgLoading] = useState(false);
   const [progSaved, setProgSaved] = useState(false);
   const [progError, setProgError] = useState("");
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [hasUploadedPdf, setHasUploadedPdf] = useState(false);
 
   // ─── Fetch users ──────────────────────────────────────────
   const fetchUsers = useCallback(async () => {
@@ -146,7 +148,9 @@ export default function AdminPage() {
     try {
       const res = await fetch("/api/program");
       const data = await res.json();
-      setProgram(data);
+      setProgram({ days: data.days || [], venue: data.venue || "", contact: data.contact || "", phone: data.phone || "" });
+      setHasUploadedPdf(data.hasPdf === true);
+      setPdfFile(null);
     } catch {
       /* ignore */
     } finally {
@@ -214,6 +218,24 @@ export default function AdminPage() {
     setProgSaved(false);
     setProgError("");
     try {
+      // If a new PDF file was selected, upload it via FormData first
+      if (pdfFile) {
+        const formData = new FormData();
+        formData.append("file", pdfFile);
+        const uploadRes = await fetch("/api/program/pdf", {
+          method: "POST",
+          body: formData,
+        });
+        if (!uploadRes.ok) {
+          const d = await uploadRes.json().catch(() => ({ error: "PDF upload failed" }));
+          setProgError(d.error || "PDF upload failed.");
+          setProgLoading(false);
+          return;
+        }
+        setPdfFile(null);
+        setHasUploadedPdf(true);
+      }
+
       const res = await fetch("/api/program", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -249,6 +271,8 @@ export default function AdminPage() {
         const data = await res.json();
         setProgram(data);
         setProgSaved(true);
+        setPdfFile(null);
+        setHasUploadedPdf(false);
         setTimeout(() => setProgSaved(false), 3000);
       }
     } catch {
@@ -577,6 +601,14 @@ export default function AdminPage() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 sm:mb-6">
               <h2 className="font-heading text-lg font-bold">{t("programEditor")}</h2>
               <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                <a
+                  href={`/api/program/pdf?lang=${lang}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs px-3 py-1.5 border border-primary text-primary rounded-md hover:bg-primary-lighter transition-colors flex items-center gap-1"
+                >
+                  {t("viewProgramPdf")}
+                </a>
                 <button
                   onClick={resetProgram}
                   className="text-xs px-2 py-1 text-muted hover:text-primary underline"
@@ -597,6 +629,64 @@ export default function AdminPage() {
                   {progLoading ? t("saving") : t("saveProgram")}
                 </button>
               </div>
+            </div>
+
+            {/* PDF Upload */}
+            <div className="mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-border">
+              <p className="text-xs font-semibold mb-2">
+                {lang === "fr" ? "📎 Programme PDF" : "📎 Program PDF"}
+              </p>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                <label className="flex items-center gap-2 px-4 py-2.5 border border-dashed border-border rounded-lg cursor-pointer hover:border-primary hover:bg-primary-lighter/30 transition-colors text-sm">
+                  <span className="text-muted">
+                    {pdfFile
+                      ? pdfFile.name
+                      : hasUploadedPdf
+                      ? (lang === "fr" ? "✅ PDF déjà uploadé — Cliquez pour remplacer" : "✅ PDF already uploaded — Click to replace")
+                      : (lang === "fr" ? "📁 Choisir un fichier PDF..." : "📁 Choose a PDF file...")}
+                  </span>
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file && file.type === "application/pdf") {
+                        setPdfFile(file);
+                      }
+                    }}
+                  />
+                </label>
+                {pdfFile && (
+                  <button
+                    onClick={() => setPdfFile(null)}
+                    className="text-xs text-muted hover:text-danger underline"
+                  >
+                    {lang === "fr" ? "Annuler" : "Cancel"}
+                  </button>
+                )}
+                {hasUploadedPdf && !pdfFile && (
+                  <button
+                    onClick={async () => {
+                      if (!confirm(lang === "fr" ? "Supprimer le PDF uploadé ?" : "Delete uploaded PDF?")) return;
+                      setProgLoading(true);
+                      try {
+                        const res = await fetch("/api/program/pdf", { method: "DELETE" });
+                        if (res.ok) setHasUploadedPdf(false);
+                      } catch { /* ignore */ }
+                      finally { setProgLoading(false); }
+                    }}
+                    className="text-xs text-danger hover:underline"
+                  >
+                    {lang === "fr" ? "🗑 Supprimer le PDF" : "🗑 Delete PDF"}
+                  </button>
+                )}
+              </div>
+              <p className="text-[11px] text-muted mt-2">
+                {lang === "fr"
+                  ? "Uploader un PDF remplace le programme généré automatiquement. Laissez vide pour utiliser la génération auto."
+                  : "Upload a PDF to replace the auto-generated program. Leave empty to use auto-generation."}
+              </p>
             </div>
 
             {/* Venue, Contact & Phone */}
