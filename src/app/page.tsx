@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n";
+import { REGISTRATIONS_CLOSED } from "@/lib/config";
 
 const GRADES = [
   "Externe", "Interne", "Médecin généraliste",
@@ -82,6 +83,53 @@ export default function HomePage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  if (REGISTRATIONS_CLOSED) {
+    return (
+      <div
+        className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-8 sm:py-16 relative"
+      >
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#faf4f5]/50 via-[#e8dfe2]/50 to-[#dce8f0]/50" />
+        <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden relative z-10">
+          <div className="text-center px-6 sm:px-10 py-10 sm:py-12">
+            {/* Language switcher */}
+            <div className="text-right mb-1">
+              <button
+                onClick={() => setLang(lang === "fr" ? "en" : "fr")}
+                className="text-xs px-3 py-1.5 border border-border rounded-full hover:bg-primary-lighter transition-colors"
+              >
+                {lang === "fr" ? t("switchToLabel") : t("languageLabel")}
+              </button>
+            </div>
+            <span className="text-2xl sm:text-3xl text-primary">♀</span>
+            <h1 className="font-heading text-xl sm:text-2xl font-bold mt-3">
+              {t("appTitle")}
+            </h1>
+            <p className="text-sm text-muted mt-1">
+              {t("appSubtitle")}
+            </p>
+
+            <div className="mt-8 inline-block px-5 py-3 bg-danger-light text-danger rounded-full text-sm font-semibold">
+              {t("registrationsClosed")}
+            </div>
+            <p className="text-sm text-muted mt-4 leading-relaxed">
+              {t("registrationsClosedMessage")}
+            </p>
+
+            <div className="mt-8 pt-4 border-t border-border text-center">
+              <a
+                href="/admin"
+                className="text-xs text-muted hover:text-primary transition-colors"
+              >
+                {t("adminLogin")}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (registered) {

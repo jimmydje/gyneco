@@ -38,6 +38,8 @@ export const translations = {
     phonePlaceholder: "+213 ...",
     registerBtn: "Register",
     registering: "Registering...",
+    registrationsClosed: "Registrations are closed",
+    registrationsClosedMessage: "Thank you for your interest. Registrations for this event are now closed.",
     adminLogin: "🔒 Login",
     downloadProgramPdf: "📄 Download Program (PDF)",
 
@@ -162,6 +164,8 @@ export const translations = {
     phonePlaceholder: "+213 ...",
     registerBtn: "S'inscrire",
     registering: "Inscription...",
+    registrationsClosed: "Inscriptions clôturées",
+    registrationsClosedMessage: "Merci de votre intérêt. Les inscriptions pour cet événement sont désormais clôturées.",
     adminLogin: "🔒 Connexion",
     downloadProgramPdf: "📄 Télécharger le programme (PDF)",
 

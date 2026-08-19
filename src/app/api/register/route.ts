@@ -3,8 +3,17 @@ export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendConfirmationEmail } from "@/lib/email";
+import { REGISTRATIONS_CLOSED } from "@/lib/config";
 
 export async function POST(req: NextRequest) {
+  // Hard stop: close registrations without touching the DB or existing users.
+  if (REGISTRATIONS_CLOSED) {
+    return NextResponse.json(
+      { error: "Les inscriptions sont clôturées. / Registrations are closed." },
+      { status: 403 }
+    );
+  }
+
   const { email, firstName, lastName, dateOfBirth, grade, specialite, workplace, phone, lang } =
     await req.json();
 
