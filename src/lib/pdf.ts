@@ -228,3 +228,214 @@ export function generateProgramPdf({
 
   return Buffer.concat(chunks);
 }
+
+// ─── Registrants list PDF ────────────────────────────────
+
+export type Registrant = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  grade: string;
+  specialite: string;
+  workplace: string;
+  phone: string | null;
+  registeredAt: Date | string;
+};
+
+function fmtDate(d: Date | string, withTime = false): string {
+  const date = typeof d === "string" ? new Date(d) : d;
+  if (isNaN(date.getTime())) return "";
+  const dd = String(date.getDate()).padStart(2, "0");
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const yyyy = date.getFullYear();
+  if (!withTime) return `${dd}/${mm}/${yyyy}`;
+  const hh = String(date.getHours()).padStart(2, "0");
+  const min = String(date.getMinutes()).padStart(2, "0");
+  return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+}
+
+export function generateRegistrantsPdf({
+  registrants,
+  lang,
+}: {
+  registrants: Registrant[];
+  lang?: string;
+}): Buffer {
+  const isFr = lang !== "en";
+
+  const t = isFr
+    ? {
+        title: "Liste des inscrits",
+        subtitle: "4ᵉ Journée de Gynécologie & Obstétrique d'Annaba",
+        date: "03 Septembre 2026",
+        total: "Total",
+        footer: "© 2026 Journées de Gynécologie & Obstétrique d'Annaba",
+        cols: [
+          "N°",
+          "Nom & Prénom",
+          "Email",
+          "Grade",
+          "Spécialité",
+          "Établissement",
+          "Téléphone",
+          "Inscrit le",
+        ],
+      }
+    : {
+        title: "Registrants List",
+        subtitle: "4th Annaba Gynecology & Obstetrics Day",
+        date: "September 3, 2026",
+        total: "Total",
+        footer: "© 2026 Annaba Gynecology & Obstetrics Day",
+        cols: [
+          "#",
+          "Full Name",
+          "Email",
+          "Grade",
+          "Specialty",
+          "Workplace",
+          "Phone",
+          "Registered",
+        ],
+      };
+
+  const doc = new PDFDocument({
+    size: "A4",
+    layout: "landscape",
+    margins: { top: 40, bottom: 40, left: 40, right: 40 },
+  });
+
+  const chunks: Buffer[] = [];
+  doc.on("data", (chunk: Buffer) => chunks.push(chunk));
+
+  const leftX = 40;
+  const rightX = doc.page.width - 40;
+  const tableWidth = rightX - leftX;
+
+  // Column widths (sum = tableWidth)
+  const colWidths = [28, 130, 155, 85, 90, 115, 72, 87];
+
+  const colX: number[] = [];
+  let cx = leftX;
+  for (const w of colWidths) {
+    colX.push(cx);
+    cx += w;
+  }
+
+  // ─── Header ────────────────────────────────────────────
+  doc
+    .font("Helvetica-Bold")
+    .fontSize(18)
+    .fillColor("#1a1a2e")
+    .text(t.title, { align: "center" });
+
+  doc.moveDown(0.2);
+
+  doc
+    .font("Helvetica")
+    .fontSize(11)
+    .fillColor("#5a5a72")
+    .text(t.subtitle, { align: "center" });
+
+  doc.moveDown(0.2);
+
+  doc
+    .fontSize(9)
+    .fillColor("#8a8a9a")
+    .text(t.date, { align: "center" });
+
+  doc.moveDown(1.2);
+
+  doc
+    .font("Helvetica-Bold")
+    .fontSize(10)
+    .fillColor("#99324d")
+    .text(`${t.total} : ${registrants.length}`, { align: "right" });
+
+  doc.moveDown(0.5);
+
+  const headerRowHeight = 22;
+  const rowHeight = 20;
+
+  const drawHeader = (y: number) => {
+    for (let i = 0; i < colWidths.length; i++) {
+      doc
+        .rect(colX[i], y, colWidths[i], headerRowHeight)
+        .fill("#99324d");
+      doc
+        .font("Helvetica-Bold")
+        .fontSize(8)
+        .fillColor("#ffffff")
+        .text(t.cols[i], colX[i] + 5, y + 7, {
+          width: colWidths[i] - 10,
+          ellipsis: true,
+        });
+    }
+  };
+
+  let y = doc.y;
+  drawHeader(y);
+  y += headerRowHeight;
+
+  registrants.forEach((r, idx) => {
+    if (y > doc.page.height - 70) {
+      doc.addPage();
+      y = doc.y;
+      drawHeader(y);
+      y += headerRowHeight;
+    }
+
+    if (idx % 2 === 1) {
+      doc.rect(leftX, y, tableWidth, rowHeight).fill("#faf4f5");
+    }
+
+    const cells = [
+      String(idx + 1),
+      `${r.firstName} ${r.lastName}`,
+      r.email,
+      r.grade,
+      r.specialite || "",
+      r.workplace,
+      r.phone || "",
+      fmtDate(r.registeredAt),
+    ];
+
+    for (let i = 0; i < cells.length; i++) {
+      doc
+        .font(i === 1 ? "Helvetica-Bold" : "Helvetica")
+        .fontSize(8)
+        .fillColor("#1a1a2e")
+        .text(cells[i], colX[i] + 5, y + 6, {
+          width: colWidths[i] - 10,
+          ellipsis: true,
+        });
+    }
+
+    y += rowHeight;
+  });
+
+  // ─── Footer ────────────────────────────────────────────
+  const bottomY = doc.page.height - 45;
+  if (doc.y > bottomY - rowHeight) {
+    doc.addPage();
+  }
+
+  doc
+    .moveTo(leftX, bottomY)
+    .lineTo(rightX, bottomY)
+    .strokeColor("#e8dfe2")
+    .stroke();
+
+  doc
+    .font("Helvetica")
+    .fontSize(8)
+    .fillColor("#8a8a9a")
+    .text(t.footer, leftX, bottomY + 10, {
+      align: "center",
+      width: tableWidth,
+    });
+
+  doc.end();
+
+  return Buffer.concat(chunks);
+}

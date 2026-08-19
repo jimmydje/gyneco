@@ -467,12 +467,20 @@ export default function AdminPage() {
             placeholder={t("search")}
             className="px-4 py-2.5 border border-border rounded-lg text-sm w-full sm:w-80 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none"
           />
-          <button
-            onClick={() => setShowAdd(!showAdd)}
-            className="px-5 py-2.5 text-sm font-semibold bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors flex items-center gap-2"
-          >
-            {showAdd ? t("cancelAdd") : t("addRegistrant")}
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <a
+              href={`/api/admin/users/pdf?lang=${lang}`}
+              className="px-5 py-2.5 text-sm font-semibold bg-secondary text-white rounded-lg hover:opacity-90 transition-colors flex items-center gap-2"
+            >
+              {t("downloadRegistrantsPdf")}
+            </a>
+            <button
+              onClick={() => setShowAdd(!showAdd)}
+              className="px-5 py-2.5 text-sm font-semibold bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors flex items-center gap-2"
+            >
+              {showAdd ? t("cancelAdd") : t("addRegistrant")}
+            </button>
+          </div>
         </div>
 
         {/* Add form */}
