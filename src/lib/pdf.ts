@@ -260,7 +260,7 @@ export function generateRegistrantsPdf({
 }: {
   registrants: Registrant[];
   lang?: string;
-}): Buffer {
+}): Promise<Buffer> {
   const isFr = lang !== "en";
 
   const t = isFr
@@ -435,7 +435,12 @@ export function generateRegistrantsPdf({
       width: tableWidth,
     });
 
+  const result = new Promise<Buffer>((resolve, reject) => {
+    doc.on("end", () => resolve(Buffer.concat(chunks)));
+    doc.on("error", reject);
+  });
+
   doc.end();
 
-  return Buffer.concat(chunks);
+  return result;
 }

@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  const pdfBuffer = generateRegistrantsPdf({ registrants: users, lang });
+  const pdfBuffer = await generateRegistrantsPdf({ registrants: users, lang });
 
   const filename = "inscrits-gynecologie-annaba-2026.pdf";
 
